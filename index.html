@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Color to Hex Converter</title>
+<style>
+  body {
+    font-family: Arial, sans-serif;
+    text-align: center;
+    padding: 20px;
+    min-height:100vh;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    background-color:#e6f9ff;
+    font-weight:bold;
+  }
+  
+  h1{
+    color: #035c5a;
+  }
+  
+  .pro{
+    width:90%;
+    height:280px;
+    text-align:center;
+    align-items:center;
+    justify-content:center;
+    box-shadow:0 0 5px #b5b5b5;
+    border-radius:12px;
+    background-color: #fff5fe;
+  }
+  
+  p, label{
+    color:#044a00;
+  }
+</style>
+</head>
+<body>
+  <div class="pro">
+    <div id="hexSection" class="section hidden">
+            <h1>Color to Hex Converter</h1>
+            <form id="colorForm">
+                <label for="colorInput">Pick a Color:</label>
+                <input type="color" id="colorInput" value="#000000" onchange="convertColor()"/>
+            </form>
+            <p id="hexValue">Hex Value: #000000</p>
+            <p id="rgbValue">RGB Value: rgb(0, 0, 0)</p>
+            <div class="palette" id="colorList"></div>
+   </div>
+  </div>
+  <script>
+        // Function to convert color to hex and RGB
+        function convertColor() {
+            const colorInput = document.getElementById('colorInput').value;
+            const hexValue = document.getElementById('hexValue');
+            const rgbValue = document.getElementById('rgbValue');
+            const colorList = document.getElementById('colorList');
+
+            // Extract hex and RGB values
+            hexValue.textContent = `Hex Value: ${colorInput}`;
+            rgbValue.textContent = `RGB Value: ${hexToRgb(colorInput)}`;
+
+            // Add color swatch to the palette
+            const colorSwatch = document.createElement('div');
+            colorSwatch.className = 'color-swatch';
+            colorSwatch.style.background = colorInput;
+            colorList.appendChild(colorSwatch);
+        }
+
+        // Helper function to convert hex to RGB
+        function hexToRgb(hex) {
+            let r = 0, g = 0, b = 0;
+            // 3 digits
+            if (hex.length === 4) {
+                r = parseInt(hex[1] + hex[1], 16);
+                g = parseInt(hex[2] + hex[2], 16);
+                b = parseInt(hex[3] + hex[3], 16);
+            }
+            // 6 digits
+            else if (hex.length === 7) {
+                r = parseInt(hex[1] + hex[2], 16);
+                g = parseInt(hex[3] + hex[4], 16);
+                b = parseInt(hex[5] + hex[6], 16);
+            }
+            return `rgb(${r}, ${g}, ${b})`;
+        }
+
+        // Toggle sections based on selected tool
+        document.getElementById('toolSelector').addEventListener('change', (event) => {
+            const selectedTool = event.target.value;
+            document.getElementById('gradientSection').classList.toggle('hidden', selectedTool !== 'gradient');
+            document.getElementById('hexSection').classList.toggle('hidden', selectedTool !== 'hex');
+        });
+
+        // Initial load
+        updateGradient();
+  </script>
+</body>
+</html>
